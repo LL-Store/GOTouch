@@ -10,6 +10,7 @@ import dialogs from './dialogs/lazy-load'
 // 引入页面
 let Index = LazyComponent(() => import('./pages/Index/index.jsx'))
 let Blank = LazyComponent(() => import('./pages/Blank/index.jsx'))
+let Talker = LazyComponent(() => import('./pages/Talker/index.jsx'))
 
 class UiDialog extends React.Component {
   constructor(props) {
@@ -54,6 +55,7 @@ class App extends React.Component {
           <Routes>
             <Route path="/" element={<Index />}></Route>
             <Route path="blank" element={<Blank />}></Route>
+            <Route path="talker" element={<Talker />}></Route>
           </Routes>
         </HashRouter>
 

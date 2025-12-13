@@ -60,6 +60,16 @@ class Blank extends React.Component {
                 </div>
             </form>
 
+            {/* 工具列表 */}
+            <div className='tools'>
+                <ul>
+                    <li onClick={() => this.goto.call(this, "talker")}>
+                        <i className="talker"></i>
+                        <div>内网聊天工具</div>
+                    </li>
+                </ul>
+            </div>
+
             {/* 版本 */}
             <div className="aboutUS" onClick={() => this.aboutUS.call(this)}>
                 <i></i>关于我们

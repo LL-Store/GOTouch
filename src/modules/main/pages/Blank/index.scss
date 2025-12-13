@@ -101,6 +101,12 @@
                             border-radius: 0 0 0 20px;
                         }
                     }
+
+                    // logo列表
+
+                    &.talker {
+                        background-image: url("../../../../images/talker.png");
+                    }
                 }
 
             }
