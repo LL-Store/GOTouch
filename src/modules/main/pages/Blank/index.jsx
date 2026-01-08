@@ -65,7 +65,7 @@ class Blank extends React.Component {
                 <ul>
                     <li onClick={() => this.goto.call(this, "talker")}>
                         <i className="talker"></i>
-                        <div>内网聊天工具</div>
+                        <div>聊天工具</div>
                     </li>
                 </ul>
             </div>

@@ -194,7 +194,6 @@ class Index extends React.Component {
                         }
                         return ""
                     })()} ref={this.refInput} onKeyDown={(event) => this.inputKeyEvent.call(this, event)} />
-                    <button onClick={() => this.refresh.call(this)}>刷新</button>
                 </div>
                 <div className="navs">
                     {this.state.navs.map((nav, index) => (<span title={nav.title + "\n" + nav.url} className={(nav.key == this.state.current ? 'active' : '') + (nav.player ? " play" : "")} key={nav.key} onClick={() => this.changeNav.call(this, nav)}>

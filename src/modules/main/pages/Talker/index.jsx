@@ -2,7 +2,8 @@ import React from 'react'
 import './index.scss'
 // import { animation } from "vislite"
 
-document.getElementsByTagName('title')[0].innerText = "内网聊天工具"
+document.getElementsByTagName('title')[0].innerText = "聊天工具"
+document.getElementById('favicon').setAttribute('href', './talker.png')
 
 class Talker extends React.Component {
 

@@ -19,7 +19,7 @@ module.exports = function () {
                     resizable: true,
                     frame: false,
                     transparent: true,
-                    alwaysOnTop: true,
+                    // alwaysOnTop: true,
                     webPreferences: {
                         nodeIntegration: false,
                         webSecurity: true,

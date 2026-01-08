@@ -1,6 +1,6 @@
 {
   "name": "gotouch",
-  "version": "0.1.0-dev",
+  "version": "0.1.0-alpha.0",
   "description": "一款包含浏览器功能的桌面应用",
   "main": "index.js",
   "scripts": {

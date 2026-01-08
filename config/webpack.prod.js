@@ -7,7 +7,7 @@ config.output = {
     path: path.resolve(__dirname, "../dist"),
     filename: "[name].js",
     chunkFilename: "bundle/[name].js",
-    assetModuleFilename: "images/[name][ext]",
+    assetModuleFilename: "[name][ext]",
     clean: true
 };
 config.optimization = {
