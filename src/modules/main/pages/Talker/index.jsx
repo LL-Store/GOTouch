@@ -34,6 +34,7 @@ class Talker extends React.Component {
                 {this.state.list.map((item, index) => <div className={item.ip == this.state.activeIp ? 'active' : ''} title={item.mac} key={index} onClick={() => this.changTalker.call(this, item)}>
                     <h2>{item.name}</h2>
                     <div>{item.ip}</div>
+                    {item.ip == this.state.ip[0] ? <span className='self-tag'>自己</span> : ''}
                 </div>)}
             </div>
             <div className='view'>

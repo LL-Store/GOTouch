@@ -5,6 +5,7 @@ let painter = null  // 屏幕画笔
 
 let painterColor = "red" // 画笔颜色
 let painterType = 'auto' // 绘制类型
+let painterFontSize = 20 // 文字大小
 
 let isMouseDown = false // 记录鼠标是否按下
 let isInputText = false // 记录是否在输入文字
@@ -59,12 +60,36 @@ class App extends React.Component {
         painterColor = event.target.value
 
         this.refHelpText.current.style.color = painterColor
-        this.refHelpText.current.style.borderBottomColor = painterColor
+    }
+
+    // 改变文字大小
+    changeFontSize(event) {
+        const v = parseInt(event.target.value, 10)
+        painterFontSize = (isNaN(v) || v <= 0) ? 20 : v
+        if (this.refHelpText && this.refHelpText.current) {
+            this.refHelpText.current.style.fontSize = painterFontSize + 'px'
+        }
     }
 
     // 改变绘制类型
     changeType(event) {
         painterType = event.target.value
+    }
+
+    // 点击屏幕
+    clickView(event) {
+        // 如果之前在输入文字
+        if (isInputText) {
+            let inputTexts = (this.refHelpText.current.innerText || "").replace(/\n\n/g, "\n").split(/\n/)
+            this.refHelpText.current.innerText = ""
+
+            for (let index = 0; index < inputTexts.length; index++) {
+                painter.fillText(inputTexts[index], textPosition[0], textPosition[1] + (index + 0.5) * painterFontSize)
+            }
+
+            this.refHelpText.current.style.display = "none"
+            isInputText = false
+        }
     }
 
     // 设置上鼠标按下
@@ -107,24 +132,14 @@ class App extends React.Component {
     doMouseDown(event) {
         if (event.target.nodeName != 'CANVAS') return
 
+        this.clickView.call(this, event)
+
         painter.config({
             strokeStyle: painterColor,
             fillStyle: painterColor,
             lineWidth: 2,
-            fontSize: 20
+            fontSize: painterFontSize
         })
-
-        // 如果之前在输入文字
-        if (isInputText) {
-            let inputTexts = (this.refHelpText.current.innerText || "").replace(/\n\n/g, "\n").split(/\n/)
-            this.refHelpText.current.innerText = ""
-
-            for (let index = 0; index < inputTexts.length; index++) {
-                painter.fillText(inputTexts[index], textPosition[0], textPosition[1] + (index + 0.5) * 26)
-            }
-
-            isInputText = false
-        }
 
         isMouseDown = true
 
@@ -160,6 +175,7 @@ class App extends React.Component {
             this.refHelpText.current.style.top = textPosition[1] + "px"
             setTimeout(() => {
                 this.refHelpText.current.focus()
+                this.refHelpText.current.style.fontSize = painterFontSize + 'px'
             })
 
             isInputText = true
@@ -245,101 +261,119 @@ class App extends React.Component {
             {/* 辅助框 */}
             <div style={{
                 position: "fixed",
-                borderStyle: "solid",
+                borderStyle: "dashed",
                 borderWidth: "2px",
-                pointerEvents: "none"
+                borderColor: "rgba(255,93,108,0.9)",
+                pointerEvents: "none",
+                borderRadius: "8px",
+                boxShadow: "0 8px 20px rgba(17,24,39,0.06)",
+                backgroundColor: "transparent"
             }} ref={this.refHelpRect}></div>
             <div style={{
                 position: "fixed",
-                minWidth: "100px",
-                minHeight: "14px",
+                minWidth: "120px",
+                minHeight: "20px",
                 fontSize: "20px",
-                lineHeight: "26px",
+                lineHeight: "1em",
                 outline: "none",
                 color: "red"
             }} ref={this.refHelpText} contentEditable></div>
 
             {/* 配置 */}
-            <div style={{
+            <div onClick={event => this.clickView.call(this, event)} style={{
                 position: "fixed",
                 left: "50vw",
                 top: "-500px",
                 transform: "translateX(-50%)",
-                backgroundColor: "white",
-                paddingRight: "10px",
+                backgroundColor: "rgba(255,255,255,0.85)",
+                padding: "14px 18px",
                 userSelect: "none",
-                whiteSpace: "nowrap",
-                boxShadow: "0 0 3px #797979",
-                borderRadius: "5px"
+                whiteSpace: "normal",
+                borderRadius: "12px",
+                border: "1px solid rgba(0,0,0,0.06)",
+                backdropFilter: "blur(6px)",
+                width: "420px",
+                maxWidth: "calc(100% - 40px)"
             }} ref={this.refSetting}>
                 <header style={{
                     cursor: "move",
                     fontSize: "16px",
-                    verticalAlign: "revert",
-                    padding: "10px",
-                    backgroundColor: "#e8e8e8",
-                    color: "#126a7d",
-                    borderRadius: "5px 0 0 5px",
-                    display: "inline-block"
+                    padding: "10px 12px",
+                    background: "linear-gradient(90deg,#f3f7fa,#ffffff)",
+                    color: "#0f172a",
+                    borderRadius: "8px",
+                    display: "inline-block",
+                    fontWeight: 700
                 }} onMouseDown={(event) => this.doMouseDown_setting.call(this, event)}>
                     屏幕画笔
                 </header>
-                <h2 style={{
-                    fontSize: "14px",
-                    marginLeft: "15px",
-                    display: "inline-block"
-                }}>
-                    类型:
-                </h2>
-                <select style={{
-                    height: "20px",
-                    border: "none",
-                    borderBottom: "2px solid black",
-                    verticalAlign: "middle",
-                    outline: "none"
-                }} name="type" onChange={(event) => this.changeType.call(this, event)}>
-                    <option value="auto">自由画笔</option>
-                    <option value="rect-stroke">矩形框</option>
-                    <option value="rect-fill">填充矩形</option>
-                    <option value="text">文字</option>
-                </select>
-                <h2 style={{
-                    fontSize: "14px",
-                    marginLeft: "15px",
-                    display: "inline-block"
-                }}>
-                    颜色:
-                </h2>
-                <input style={{
-                    width: "50px",
-                    height: "30px",
-                    padding: "0",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    verticalAlign: "middle"
-                }} type="color" value="#ff0000" onChange={(event) => this.changeColor.call(this, event)} />
-                <div style={{
-                    position: "absolute",
-                    backgroundColor: "#000000",
-                    padding: "5px",
-                    margin: "0 5px",
-                    borderRadius: "0 0 5px 5px"
-                }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
+                    <label style={{ fontSize: "14px", color: "#334155", minWidth: 38 }}>类型</label>
+                    <select style={{
+                        height: "34px",
+                        padding: "6px 10px",
+                        border: "1px solid rgba(0,0,0,0.08)",
+                        verticalAlign: "middle",
+                        outline: "none",
+                        borderRadius: 8,
+                        flex: 1,
+                        background: 'white'
+                    }} name="type" onChange={(event) => this.changeType.call(this, event)}>
+                        <option value="auto">自由画笔</option>
+                        <option value="rect-stroke">矩形框</option>
+                        <option value="rect-fill">填充矩形</option>
+                        <option value="text">文字</option>
+                    </select>
+                    <label style={{ fontSize: "14px", color: "#334155" }}>颜色</label>
+                    <input style={{
+                        width: "50px",
+                        height: "34px",
+                        padding: "0",
+                        border: "none",
+                        backgroundColor: "transparent",
+                        verticalAlign: "middle",
+                        borderRadius: 8,
+                        verticalAlign: "middle",
+                        backgroundColor: "transparent",
+                    }} type="color" defaultValue="#ff0000" onChange={(event) => this.changeColor.call(this, event)} />
+                    <label style={{ fontSize: "14px", color: "#334155" }}>字号</label>
+                    <input style={{
+                        width: "70px",
+                        height: "34px",
+                        padding: "6px 8px",
+                        border: "1px solid rgba(0,0,0,0.08)",
+                        borderRadius: 8,
+                        verticalAlign: "middle",
+                        backgroundColor: "white",
+                        textAlign: 'center'
+                    }} type="number" defaultValue={painterFontSize} min="8" max="200" onChange={(event) => this.changeFontSize.call(this, event)} />
+                </div>
+                <div style={{ display: 'flex', gap: 8, marginTop: 14, justifyContent: 'flex-end' }}>
                     <button style={{
                         outline: "none",
                         border: "none",
                         backgroundColor: "#c5d1db",
-                        color: "white"
+                        color: "white",
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                        cursor: 'pointer'
                     }} onClick={this.doClear}>清空</button>
                     <button style={{
                         outline: "none",
-                        border: "none"
+                        border: "1px solid rgba(0,0,0,0.06)",
+                        background: "white",
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                        cursor: 'pointer'
                     }} onClick={this.doReset}>重置</button>
                     <button style={{
                         outline: "none",
                         border: "none",
-                        backgroundColor: "red",
-                        color: "white"
+                        backgroundColor: "#ff5d6c",
+                        color: "white",
+                        padding: '8px 12px',
+                        borderRadius: 8,
+                        cursor: 'pointer'
                     }} onClick={this.doExit}>退出</button>
                 </div>
             </div>
