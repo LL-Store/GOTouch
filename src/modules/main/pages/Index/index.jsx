@@ -1,7 +1,7 @@
 import React from 'react'
 import './index.scss'
 
-let browsers = ['browser://blank', 'browser://talker']
+let browsers = ['browser://blank']
 
 class Index extends React.Component {
 

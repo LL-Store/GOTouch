@@ -37,9 +37,6 @@ function createWindow() {
 let win;
 app.whenReady().then(() => {
 
-    // 系统托盘
-    require('./nodejs/trayLaunch.js')();
-
     // 创建主界面
     win = createWindow();
 

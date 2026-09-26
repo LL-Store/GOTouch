@@ -1,6 +1,6 @@
 {
   "name": "gotouch",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.0",
   "description": "一款包含浏览器功能的桌面应用",
   "main": "index.js",
   "scripts": {
@@ -74,6 +74,7 @@
     "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
+    "@oipage/cli": "^0.2.1",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.7.2",
     "electron": "^26.1.0",
@@ -91,7 +92,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "oipage": "^1.5.0",
-    "vislite": "^1.6.0"
+    "oipage": "^2.1.0"
   }
 }
